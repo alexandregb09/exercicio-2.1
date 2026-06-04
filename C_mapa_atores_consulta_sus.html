@@ -1,0 +1,840 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mapa de Atores — Jornada de Consulta Médica no SUS</title>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      font-size: 15px;
+      line-height: 1.65;
+      color: #1a1a2e;
+      background: #f4f6fb;
+    }
+
+    /* ── Layout ── */
+    .page {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 2rem 1.5rem 4rem;
+    }
+
+    /* ── Header ── */
+    header {
+      background: linear-gradient(135deg, #1a4f72 0%, #0d7a5f 100%);
+      color: #fff;
+      padding: 2.5rem 2rem 2rem;
+      border-radius: 12px;
+      margin-bottom: 2rem;
+    }
+    header h1 {
+      font-size: 1.65rem;
+      font-weight: 700;
+      margin-bottom: .5rem;
+      line-height: 1.3;
+    }
+    header p.subtitle {
+      font-size: .88rem;
+      opacity: .82;
+    }
+    header p.subtitle code {
+      background: rgba(255,255,255,.18);
+      border-radius: 4px;
+      padding: 1px 5px;
+      font-family: monospace;
+    }
+
+    /* ── Sections ── */
+    section {
+      background: #fff;
+      border-radius: 10px;
+      padding: 1.8rem 2rem;
+      margin-bottom: 1.6rem;
+      box-shadow: 0 1px 4px rgba(0,0,0,.08);
+    }
+    section h2 {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #1a4f72;
+      margin-bottom: 1rem;
+      padding-bottom: .5rem;
+      border-bottom: 2px solid #e0eaf3;
+      display: flex;
+      align-items: center;
+      gap: .5rem;
+    }
+    section h2 .badge {
+      font-size: .72rem;
+      background: #1a4f72;
+      color: #fff;
+      border-radius: 20px;
+      padding: 2px 9px;
+      font-weight: 600;
+      letter-spacing: .03em;
+    }
+
+    p { margin-bottom: .9rem; }
+    p:last-child { margin-bottom: 0; }
+
+    /* ── Callout / blockquote ── */
+    .callout {
+      background: #eef5fb;
+      border-left: 4px solid #1a7abf;
+      border-radius: 0 8px 8px 0;
+      padding: .9rem 1.2rem;
+      margin: 1rem 0 .5rem;
+      font-size: .9rem;
+      color: #1a3a52;
+    }
+    .callout.warning {
+      background: #fff8e6;
+      border-left-color: #e0963a;
+      color: #5a3a00;
+    }
+    .callout.danger {
+      background: #fdf0f0;
+      border-left-color: #cc3333;
+      color: #5a0000;
+    }
+    .callout strong { font-weight: 700; }
+
+    /* ── Diagram wrapper ── */
+    .diagram-wrap {
+      overflow-x: auto;
+      padding: 1rem 0;
+    }
+    .mermaid {
+      min-width: 680px;
+    }
+
+    /* ── Table ── */
+    .table-wrap { overflow-x: auto; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: .83rem;
+    }
+    thead tr {
+      background: #1a4f72;
+      color: #fff;
+    }
+    thead th {
+      padding: .55rem .7rem;
+      text-align: left;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+    tbody tr:nth-child(even) { background: #f4f8fc; }
+    tbody tr:hover { background: #ddeeff; }
+    tbody td {
+      padding: .5rem .7rem;
+      vertical-align: top;
+      border-bottom: 1px solid #e5edf5;
+    }
+    td:first-child { text-align: center; color: #888; font-size: .8rem; }
+
+    /* RACI pills */
+    .raci { font-weight: 700; }
+    .r  { color: #1a7abf; }
+    .a  { color: #c0392b; }
+    .c  { color: #27ae60; }
+    .i  { color: #7f8c8d; }
+
+    /* Power / Interest badges */
+    .badge-alto   { background: #1a4f72; color: #fff; border-radius: 4px; padding: 1px 7px; font-size: .75rem; }
+    .badge-medio  { background: #5b8db8; color: #fff; border-radius: 4px; padding: 1px 7px; font-size: .75rem; }
+    .badge-baixo  { background: #b0c4d8; color: #1a1a2e; border-radius: 4px; padding: 1px 7px; font-size: .75rem; }
+
+    /* ── Stage tags ── */
+    .stage-front { background: #e8f5e9; color: #2e7d32; border-radius: 4px; padding: 1px 7px; font-size: .75rem; font-weight: 600; }
+    .stage-back  { background: #fff3e0; color: #e65100; border-radius: 4px; padding: 1px 7px; font-size: .75rem; font-weight: 600; }
+    .stage-gov   { background: #ede7f6; color: #4527a0; border-radius: 4px; padding: 1px 7px; font-size: .75rem; font-weight: 600; }
+
+    /* ── Hypothesis cards ── */
+    .hyp-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(420px, 1fr));
+      gap: 1rem;
+    }
+    .hyp-card {
+      border: 1px solid #dde5f0;
+      border-radius: 8px;
+      padding: 1rem 1.2rem;
+    }
+    .hyp-card h3 {
+      font-size: .9rem;
+      font-weight: 700;
+      color: #c0392b;
+      margin-bottom: .5rem;
+    }
+    .hyp-card p { font-size: .87rem; margin-bottom: .5rem; }
+    .hyp-card .evidence {
+      font-size: .8rem;
+      color: #555;
+      border-left: 3px solid #e0963a;
+      padding-left: .7rem;
+    }
+
+    /* ── Voices ── */
+    .voice-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: .9rem;
+    }
+    .voice-list li {
+      border-left: 4px solid #0d7a5f;
+      padding-left: 1rem;
+      font-size: .88rem;
+    }
+    .voice-list li strong { display: block; color: #0d7a5f; margin-bottom: .15rem; }
+
+    /* ── Decisions ── */
+    ol.decisions {
+      padding-left: 1.4rem;
+      display: flex;
+      flex-direction: column;
+      gap: .8rem;
+    }
+    ol.decisions li { font-size: .88rem; }
+    ol.decisions li em { color: #777; font-size: .83rem; }
+
+    /* ── Legend ── */
+    .legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: .6rem 1.2rem;
+      font-size: .82rem;
+    }
+    .legend-item { display: flex; align-items: center; gap: .35rem; }
+
+    /* ── Footer ── */
+    footer {
+      text-align: center;
+      font-size: .78rem;
+      color: #aaa;
+      margin-top: 2rem;
+    }
+
+    @media (max-width: 680px) {
+      header h1 { font-size: 1.25rem; }
+      section { padding: 1.2rem 1rem; }
+      .hyp-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+<div class="page">
+
+  <!-- ── Header ── -->
+  <header>
+    <h1>Mapa de Atores — Jornada de Consulta Médica no SUS</h1>
+    <p class="subtitle">
+      Artefato da Parte C do Exercício 2.1 &nbsp;·&nbsp;
+      Derivado de <code>B_relatorio_auditoria_v3.md</code> &nbsp;·&nbsp;
+      Decidido via sessão <code>/grill-me</code> (<code>C_grill_transcript.md</code>) &nbsp;·&nbsp;
+      Boas práticas Aula 02 — Passos 0→5
+    </p>
+  </header>
+
+  <!-- ── Passo 0 ── -->
+  <section id="passo0">
+    <h2><span class="badge">Passo 0</span> Propósito do mapa</h2>
+    <p>
+      <strong>Endereçar o déficit estrutural de cobertura assistencial e a descontinuidade do
+      cuidado na jornada de consulta médica no SUS</strong>, originados em dois pontos de ruptura
+      sobrepostos:
+    </p>
+    <p>
+      (1)&nbsp;a <strong>vacância médica na eSF</strong> que reduz a cobertura real para
+      <strong>0,63 consultas/hab./ano</strong> — 42% da meta indicativa de 1,5 — e
+    </p>
+    <p>
+      (2)&nbsp;a <strong>ausência de accountability único no handoff E6A→E7</strong>, em que a
+      contrarreferência raramente retorna ao médico de família, perpetuando encaminhamentos
+      redundantes e <em>failure demand</em> no nível especializado.
+    </p>
+    <div class="callout">
+      O mapa não é um inventário completo do SUS (financiamento constitucional, habilitação de
+      leitos hospitalares e judicialização de segunda instância ficaram <strong>fora de escopo</strong>
+      por decisão de altitude). Ele é <strong>jornada-cêntrico</strong>: detalha quem participa
+      das etapas E1–E7 e a retaguarda que <strong>gera os gargalos de acesso</strong>.
+    </div>
+  </section>
+
+  <!-- ── Passo 4 — Diagrama ── -->
+  <section id="passo4-diagrama">
+    <h2><span class="badge">Passo 4</span> Mapa de relações — jornada · handoffs · fluxo de dados</h2>
+    <p>
+      Três camadas: (1)&nbsp;o <strong>fluxo da jornada do cidadão</strong>;
+      (2)&nbsp;os <strong>handoffs críticos</strong> — E6A→E7 em <strong style="color:#cc3333">vermelho</strong>
+      (contrarreferência sem A único) e E6B→E7 como convergência frágil;
+      (3)&nbsp;o <strong>fluxo de dados e políticas a montante</strong> que condiciona a
+      disponibilidade de médicos e vagas. Governança entra como setas tracejadas.
+    </p>
+    <div class="diagram-wrap">
+      <div class="mermaid">
+flowchart TB
+    subgraph UP["⬆ Política e Financiamento (backstage estrutural)"]
+        MS["MS / SAPS<br/>(política nacional + repasse fundo a fundo<br/>+ bloqueio e-Gestor APS)"]
+        CNRM["CNRM · CNRMS<br/>(formação + residência MFC / eMulti)"]
+    end
+
+    subgraph BACK["⚙ Retaguarda operacional (backstage)"]
+        SMS2["SMS — Secretaria Municipal<br/>(gerencia UBS · eSF · central de regulação)"]
+        SES["SES — Secretaria Estadual<br/>(contratos OS · rede especializada)"]
+        CROSS["CROSS — Seconci-SP<br/>(regulação ambulatorial estadual · SIRESP)"]
+        AMEOS["AME / Policlínica<br/>OS-OSCIP (prestador especializado)"]
+    end
+
+    subgraph FRONT["🏥 Frontstage — jornada do cidadão"]
+        CID(["Cidadão / Paciente"])
+        E1["E1 · Acolhimento e Triagem<br/>ACS · Téc. Enf. · Enfermeiro"]
+        E2["E2 · Consulta APS<br/>MFC · Enfermeiro · eMulti"]
+        E3["E3 · Decisão de Encaminhamento<br/>MFC · Enfermeiro Coord."]
+        E4["E4 · Inserção na Fila<br/>Méd. Reg. Municipal · Operador Reg."]
+        E5["E5 · Regulação e Priorização<br/>CROSS (P1–P4)"]
+        E6A["E6A · Consulta Especializada<br/>Méd. Especialista"]
+        E7["E7 · Contrarreferência e Retorno<br/>MFC recepção · Enfermeiro"]
+    end
+
+    subgraph PARAL["⚡ Ramo Paralelo — Urgência/Emergência"]
+        E6B["E6B · UPA / Pronto-Socorro<br/>Méd. Urgência · Enf. Urgência · SAMU"]
+    end
+
+    subgraph GOV["🏛 Governança"]
+        CIT["CIT · CIB · CIR<br/>(pactuação interfederativa de metas)"]
+        DEN["DenaSUS<br/>(auditoria ex-post)"]
+        CS["Conselhos de Saúde · Ouvidorias<br/>(controle social)"]
+        ANS2["ANS<br/>(ressarcimento ao SUS)"]
+    end
+
+    CID -->|busca atendimento| E1
+    E1 --> E2
+    E2 --> E3
+    E3 -->|encaminhamento ordinário| E4
+    E4 -->|inserção no SIRESP| E5
+    E5 -->|aloca vaga P1–P4| E6A
+    E6A -.->|"HANDOFF SEM A ÚNICO (E6A→E7):<br/>contrarreferência raramente devolvida"| E7
+
+    E3 ==>|urgência ativa o ramo paralelo| E6B
+    E6B ==>|"CONVERGÊNCIA FRÁGIL:<br/>sem protocolo formal de retorno à APS"| E7
+
+    MS -->|repasse fundo a fundo + PNAB| SMS2
+    MS -->|bloqueia verbas após 2 meses de vacância| SMS2
+    CNRM -.->|forma MFC e eMulti| E2
+    SMS2 -->|gerencia e financia eSF| E1
+    SMS2 -->|opera central de regulação| E4
+    SES -->|contrato de gestão| CROSS
+    CROSS -->|classifica P1–P4 e aloca vagas| E5
+    SES -->|contrato de gestão| AMEOS
+    AMEOS -->|executa consulta| E6A
+
+    CIT -.->|pactuação de metas assistenciais| MS
+    DEN -.->|auditoria ex-post do SIA/SUS| SMS2
+    CS -.->|controle social| SMS2
+    ANS2 -.->|ressarcimento Art. 32 Lei 9.656/98| E6A
+
+    classDef handoff stroke:#cc3333,stroke-width:3px
+    linkStyle 6,7,8 stroke:#cc3333,stroke-width:3px
+      </div>
+    </div>
+    <div class="callout danger">
+      <strong>Leitura do diagrama.</strong> A ligação do cidadão à rede especializada depende de dois
+      fluxos a montante invisíveis para ele: o repasse fundo a fundo MS→SMS (que determina se a eSF
+      está completa ou em vacância) e o contrato de gestão SES→CROSS (que determina a velocidade de
+      alocação de vagas). O handoff <strong>E6A→E7</strong> não tem nenhum ator <strong>Aprovador (A)
+      único</strong> da experiência ponta-a-ponta: a SMS fecha o caso regulatório, a OS fecha a
+      produção de consultas, e <strong>ninguém</strong> é A do retorno clínico ao médico de família.
+      É a violação do <strong>agnosticismo organizacional</strong> (Princípio #5, Lou Downe) que
+      materializa a <em>failure demand</em> de encaminhamentos redundantes.
+    </div>
+  </section>
+
+  <!-- ── Passo 4 — Tabela RACI ── -->
+  <section id="passo4-raci">
+    <h2><span class="badge">Passo 4</span> Tabela de Atores — RACI por etapa · categoria · palco</h2>
+
+    <!-- Legenda etapas -->
+    <div class="callout" style="margin-bottom:1rem">
+      <strong>Etapas da jornada:</strong>
+      <strong>E1</strong> Acolhimento e Triagem ·
+      <strong>E2</strong> Consulta APS ·
+      <strong>E3</strong> Decisão de Encaminhamento ·
+      <strong>E4</strong> Inserção na Fila (SIRESP/SISREG) ·
+      <strong>E5</strong> Regulação e Priorização (CROSS) ·
+      <strong>E6A</strong> Consulta Especializada ·
+      <strong>E6B</strong> Urgência/Emergência <em>(ramo paralelo)</em> ·
+      <strong>E7</strong> Contrarreferência e Retorno
+    </div>
+
+    <!-- Legenda RACI -->
+    <div class="legend" style="margin-bottom:1rem">
+      <span class="legend-item"><span class="raci r">R</span> executa</span>
+      <span class="legend-item"><span class="raci a">A</span> responde / aprova (<em>accountable</em>)</span>
+      <span class="legend-item"><span class="raci c">C</span> consultado</span>
+      <span class="legend-item"><span class="raci i">I</span> informado</span>
+      <span class="legend-item"><span class="stage-front">front</span> frontstage</span>
+      <span class="legend-item"><span class="stage-back">back</span> backstage</span>
+      <span class="legend-item"><span class="stage-gov">gov</span> governança</span>
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Ator</th>
+            <th>Categoria</th>
+            <th>Palco</th>
+            <th>Etapas RACI</th>
+            <th>Entra</th>
+            <th>Sai</th>
+            <th>Poder</th>
+            <th>Interesse</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>1</td>
+            <td><strong>Cidadão / Paciente</strong></td>
+            <td>Usuário direto</td>
+            <td><span class="stage-front">front</span></td>
+            <td>E1:<span class="raci r">R</span> · E2:<span class="raci r">R</span> · E3:<span class="raci i">I</span> · E4:<span class="raci i">I</span> · E5:<span class="raci i">I</span> · E6A/B:<span class="raci r">R</span> · E7:<span class="raci r">R</span></td>
+            <td>E1 (busca atendimento espontâneo)</td>
+            <td>E7 idealizado; na prática, abandono ou judicialização</td>
+            <td><span class="badge-baixo">Baixo</span></td>
+            <td><span class="badge-alto">Alto</span></td>
+          </tr>
+          <tr>
+            <td>2</td>
+            <td><strong>ACS</strong></td>
+            <td>Operador</td>
+            <td><span class="stage-front">front</span></td>
+            <td>E1:<span class="raci r">R</span> · E2:<span class="raci c">C</span> · E7:<span class="raci i">I</span></td>
+            <td>E1 (captação territorial)</td>
+            <td>E1 (não acompanha etapas regulatórias)</td>
+            <td><span class="badge-baixo">Baixo</span></td>
+            <td><span class="badge-alto">Alto</span></td>
+          </tr>
+          <tr>
+            <td>3</td>
+            <td><strong>Técnico/Auxiliar de Enfermagem</strong></td>
+            <td>Operador</td>
+            <td><span class="stage-front">front</span></td>
+            <td>E1:<span class="raci r">R</span> · E2:<span class="raci c">C</span> · E6A:<span class="raci r">R</span> · E6B:<span class="raci r">R</span></td>
+            <td>E1 (recepção e pré-consulta)</td>
+            <td>E6A/E6B (não segue para E7)</td>
+            <td><span class="badge-baixo">Baixo</span></td>
+            <td><span class="badge-medio">Médio</span></td>
+          </tr>
+          <tr>
+            <td>4</td>
+            <td><strong>Enfermeiro</strong></td>
+            <td>Operador</td>
+            <td><span class="stage-front">front</span></td>
+            <td>E1:<span class="raci r">R</span> · E2:<span class="raci r">R</span> · E3:<span class="raci r">R</span> · E7:<span class="raci r">R</span></td>
+            <td>E1 (classificação de risco)</td>
+            <td>E7 (coordena retorno)</td>
+            <td><span class="badge-medio">Médio</span></td>
+            <td><span class="badge-alto">Alto</span></td>
+          </tr>
+          <tr>
+            <td>5</td>
+            <td><strong>Médico de Família e Comunidade (MFC)</strong></td>
+            <td>Operador/Decisor</td>
+            <td><span class="stage-front">front</span></td>
+            <td>E2:<span class="raci r">R</span>/<span class="raci a">A</span> · E3:<span class="raci r">R</span>/<span class="raci a">A</span> · E7:<span class="raci r">R</span>/<span class="raci a">A</span></td>
+            <td>E2 (consulta clínica)</td>
+            <td>E7 (fecha o ciclo — quando acontece)</td>
+            <td><span class="badge-medio">Médio</span></td>
+            <td><span class="badge-alto">Alto</span></td>
+          </tr>
+          <tr>
+            <td>6</td>
+            <td><strong>eMulti</strong></td>
+            <td>Operador</td>
+            <td><span class="stage-front">front</span></td>
+            <td>E2:<span class="raci r">R</span> · E3:<span class="raci c">C</span></td>
+            <td>E2 (apoio matricial, teleconsultoria)</td>
+            <td>E3 (não acompanha etapas regulatórias)</td>
+            <td><span class="badge-baixo">Baixo</span></td>
+            <td><span class="badge-alto">Alto</span></td>
+          </tr>
+          <tr>
+            <td>7</td>
+            <td><strong>Médico Regulador Municipal</strong></td>
+            <td>Gestor/Decisor</td>
+            <td><span class="stage-front">front</span> (regulação)</td>
+            <td>E4:<span class="raci r">R</span>/<span class="raci a">A</span></td>
+            <td>E4 (valida e prioriza encaminhamentos)</td>
+            <td>E4 (encaminha ao SIRESP)</td>
+            <td><span class="badge-medio">Médio</span></td>
+            <td><span class="badge-alto">Alto</span></td>
+          </tr>
+          <tr>
+            <td>8</td>
+            <td><strong>Operador de Regulação Municipal</strong></td>
+            <td>Operador</td>
+            <td><span class="stage-front">front</span> (regulação)</td>
+            <td>E4:<span class="raci r">R</span></td>
+            <td>E4 (inserção de dados no SIRESP)</td>
+            <td>E4</td>
+            <td><span class="badge-baixo">Baixo</span></td>
+            <td><span class="badge-medio">Médio</span></td>
+          </tr>
+          <tr>
+            <td>9</td>
+            <td><strong>CROSS / Seconci-SP</strong></td>
+            <td>OS — Ator institucional</td>
+            <td><span class="stage-back">back</span> (regulação estadual)</td>
+            <td>E5:<span class="raci r">R</span>/<span class="raci a">A</span></td>
+            <td>E5 (recebe solicitação do SIRESP)</td>
+            <td>E5 (após alocação de vaga)</td>
+            <td><span class="badge-alto">Alto</span></td>
+            <td><span class="badge-alto">Alto</span></td>
+          </tr>
+          <tr>
+            <td>10</td>
+            <td><strong>Médico Especialista</strong></td>
+            <td>Operador/Decisor</td>
+            <td><span class="stage-front">front</span></td>
+            <td>E6A:<span class="raci r">R</span>/<span class="raci a">A</span> · E7:<span class="raci r">R</span></td>
+            <td>E6A (consulta especializada)</td>
+            <td>E7 — deveria; na prática encerra em E6A sem contrarreferência</td>
+            <td><span class="badge-medio">Médio</span></td>
+            <td><span class="badge-alto">Alto</span></td>
+          </tr>
+          <tr>
+            <td>11</td>
+            <td><strong>Médico de Urgência/Emergência</strong></td>
+            <td>Operador</td>
+            <td><span class="stage-front">front</span></td>
+            <td>E6B:<span class="raci r">R</span></td>
+            <td>E6B (atendimento de urgência)</td>
+            <td>E6B (raramente formaliza retorno à APS)</td>
+            <td><span class="badge-medio">Médio</span></td>
+            <td><span class="badge-alto">Alto</span></td>
+          </tr>
+          <tr>
+            <td>12</td>
+            <td><strong>SAMU</strong></td>
+            <td>Operador</td>
+            <td><span class="stage-front">front</span></td>
+            <td>E6B:<span class="raci r">R</span></td>
+            <td>E6B (transporte pré-hospitalar)</td>
+            <td>E6B (após transferência para unidade)</td>
+            <td><span class="badge-medio">Médio</span></td>
+            <td><span class="badge-medio">Médio</span></td>
+          </tr>
+          <tr>
+            <td>13</td>
+            <td><strong>Secretaria Municipal de Saúde (SMS)</strong></td>
+            <td>Gestor/Decisor</td>
+            <td><span class="stage-back">back</span></td>
+            <td>E1:<span class="raci a">A</span> · E2:<span class="raci a">A</span> · E3:<span class="raci a">A</span> · E4:<span class="raci a">A</span> · E7:<span class="raci a">A</span></td>
+            <td>Permanente</td>
+            <td>—</td>
+            <td><span class="badge-alto">Alto</span></td>
+            <td><span class="badge-alto">Alto</span></td>
+          </tr>
+          <tr>
+            <td>14</td>
+            <td><strong>AME / Policlínica / OS-OSCIP</strong></td>
+            <td>Prestador</td>
+            <td><span class="stage-back">back</span> (executa no front)</td>
+            <td>E6A:<span class="raci r">R</span>/<span class="raci a">A</span></td>
+            <td>E6A (executa consulta sob contrato)</td>
+            <td>E6A — deveria manter A até E7</td>
+            <td><span class="badge-alto">Alto</span></td>
+            <td><span class="badge-alto">Alto</span></td>
+          </tr>
+          <tr>
+            <td>15</td>
+            <td><strong>UPA / Pronto-Socorro</strong></td>
+            <td>Prestador</td>
+            <td><span class="stage-back">back</span> (executa no front)</td>
+            <td>E6B:<span class="raci r">R</span>/<span class="raci a">A</span></td>
+            <td>E6B (atendimento de urgência)</td>
+            <td>E6B (sem protocolo de retorno à APS)</td>
+            <td><span class="badge-medio">Médio</span></td>
+            <td><span class="badge-alto">Alto</span></td>
+          </tr>
+          <tr>
+            <td>16</td>
+            <td><strong>Secretaria Estadual de Saúde (SES)</strong></td>
+            <td>Gestor/Decisor</td>
+            <td><span class="stage-back">back</span></td>
+            <td>E5:<span class="raci a">A</span> · E6A:<span class="raci a">A</span> · E6B:<span class="raci a">A</span></td>
+            <td>E5 (gestão da rede especializada)</td>
+            <td>—</td>
+            <td><span class="badge-alto">Alto</span></td>
+            <td><span class="badge-alto">Alto</span></td>
+          </tr>
+          <tr>
+            <td>17</td>
+            <td><strong>Ministério da Saúde / SAPS</strong></td>
+            <td>Gestor/Normatizador</td>
+            <td><span class="stage-back">back</span></td>
+            <td>E1–E7:<span class="raci a">A</span> <em>(política e financiamento)</em></td>
+            <td>Permanente</td>
+            <td>—</td>
+            <td><span class="badge-alto">Alto</span></td>
+            <td><span class="badge-alto">Alto</span></td>
+          </tr>
+          <tr>
+            <td>18</td>
+            <td><strong>CIT · CIB · CIR</strong></td>
+            <td>Instância interfederativa</td>
+            <td><span class="stage-gov">gov</span></td>
+            <td>E1–E7:<span class="raci c">C</span></td>
+            <td>Permanente</td>
+            <td>—</td>
+            <td><span class="badge-alto">Alto</span></td>
+            <td><span class="badge-medio">Médio</span></td>
+          </tr>
+          <tr>
+            <td>19</td>
+            <td><strong>Conselhos de Saúde</strong></td>
+            <td>Controle social</td>
+            <td><span class="stage-gov">gov</span></td>
+            <td>E1–E7:<span class="raci c">C</span></td>
+            <td>Permanente</td>
+            <td>—</td>
+            <td><span class="badge-medio">Médio</span></td>
+            <td><span class="badge-alto">Alto</span></td>
+          </tr>
+          <tr>
+            <td>20</td>
+            <td><strong>DenaSUS</strong></td>
+            <td>Controle interno</td>
+            <td><span class="stage-gov">gov</span></td>
+            <td>E1–E7:<span class="raci c">C</span> <em>(episódico)</em></td>
+            <td>Episódico (auditoria)</td>
+            <td>—</td>
+            <td><span class="badge-alto">Alto</span></td>
+            <td><span class="badge-baixo">Baixo</span></td>
+          </tr>
+          <tr>
+            <td>21</td>
+            <td><strong>ANS</strong></td>
+            <td>Regulador</td>
+            <td><span class="stage-gov">gov</span></td>
+            <td>E6A:<span class="raci c">C</span> <em>(quando há beneficiário de plano)</em></td>
+            <td>E6A (ressarcimento)</td>
+            <td>—</td>
+            <td><span class="badge-medio">Médio</span></td>
+            <td><span class="badge-baixo">Baixo</span></td>
+          </tr>
+          <tr>
+            <td>22</td>
+            <td><strong>Ouvidorias</strong></td>
+            <td>Controle social</td>
+            <td><span class="stage-gov">gov</span></td>
+            <td>E1–E7:<span class="raci i">I</span>/<span class="raci c">C</span></td>
+            <td>Permanente</td>
+            <td>—</td>
+            <td><span class="badge-baixo">Baixo</span></td>
+            <td><span class="badge-alto">Alto</span></td>
+          </tr>
+          <tr>
+            <td>23</td>
+            <td><strong>CNRM · CNRMS · Inst. Formadoras</strong></td>
+            <td>Formação profissional</td>
+            <td><span class="stage-back">back</span> (estrutural)</td>
+            <td>E2:<span class="raci c">C</span> <em>(formação de MFC e eMulti)</em></td>
+            <td>Estrutural (pré-jornada)</td>
+            <td>—</td>
+            <td><span class="badge-medio">Médio</span></td>
+            <td><span class="badge-baixo">Baixo</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout danger" style="margin-top:1.2rem">
+      <strong>Achado RACI.</strong> A coluna <strong>A</strong> está ausente no handoff
+      <strong>E6A→E7</strong>: o Médico Especialista é <strong>R</strong> da consulta (E6A), mas
+      nenhum ator é <strong>A</strong> de garantir que a contrarreferência chegue ao MFC (E7). A SMS
+      fecha o caso regulatório (A de E7) sem verificar o fechamento clínico. A AME/OS-OSCIP é A de
+      E6A, não de E7. O resultado é um <strong>"E7 fantasma"</strong>: o processo regulatório encerra,
+      mas o loop clínico permanece aberto em mais de 80% dos casos na prática — exatamente o que gera
+      os encaminhamentos redundantes de <em>failure demand</em> de volta ao E4.
+    </div>
+  </section>
+
+  <!-- ── Passo 5 — Hipóteses ── -->
+  <section id="passo5">
+    <h2><span class="badge">Passo 5</span> Atores-chave e Hipóteses de Diagnóstico</h2>
+    <p>
+      Atores com poder de bloquear ou viabilizar a mudança: <strong>MFC/eSF (5), SMS (13),
+      CROSS/Seconci-SP (9), AME/OS-OSCIP (14), SES (16), MS/SAPS (17), DenaSUS (20),
+      Conselhos de Saúde (19)</strong> e o <strong>Cidadão (1)</strong> como voz coletiva
+      (via Conselhos e ouvidorias).
+    </p>
+    <div class="hyp-grid" style="margin-top:1rem">
+
+      <div class="hyp-card">
+        <h3>H1 (central) — Ausência de A único em E6A→E7</h3>
+        <p>A ausência de <em>accountable</em> único no handoff E6A→E7 institucionaliza a
+        descontinuidade do cuidado como <em>default</em> operacional.</p>
+        <p>Sustentam o status quo: AME/OS-OSCIP (contrato sem obrigação de contrarreferência),
+        Médico Especialista (não penalizado por omissão), SMS (fecha caso regulatório sem verificar
+        fechamento clínico).</p>
+        <div class="evidence">Taxa de contrarreferência próxima de zero na prática; MFC atende o
+        mesmo paciente repetidamente sem contexto especializado; ciclo de encaminhamentos redundantes
+        retornando ao E4 — <em>failure demand</em> estrutural.</div>
+      </div>
+
+      <div class="hyp-card">
+        <h3>H2 — Vacância médica na eSF: problema de incentivos</h3>
+        <p>O bloqueio automático de verbas pelo e-Gestor APS após 2 meses de vacância pune o
+        município sem resolver a causa raiz (atração e fixação de MFC).</p>
+        <p>Cobertura real de 0,63/hab./ano = 42% da meta indicativa de 1,5; déficit de 57,8%
+        origina-se em E2 e propaga-se para todas as etapas.</p>
+        <div class="evidence">CNRM concentra vagas de residência em grandes centros — o backstage
+        de formação não alimenta os vazios assistenciais.</div>
+      </div>
+
+      <div class="hyp-card">
+        <h3>H3 — Fragmentação do SIRESP por unidade (E4)</h3>
+        <p>A SMS não tem visão agregada da fila municipal, protegendo gestores de cobrança política
+        mas impedindo planejamento baseado em dados.</p>
+        <div class="evidence">A experiência de Campinas/SP (mai/2024) demonstra que a unificação é
+        tecnicamente viável; o que falta é vontade de tornar o problema visível ao controle social
+        e às CIR.</div>
+      </div>
+
+      <div class="hyp-card">
+        <h3>H4 — Contrato CROSS não orientado a <em>throughput</em> (E5)</h3>
+        <p>Com repasse global garantido sem vínculo a indicadores de desempenho, a CROSS opera como
+        classificador de prioridades (P1–P4) sem incentivo sistêmico para reduzir a fila — apenas
+        para organizá-la.</p>
+        <div class="evidence">O modelo de contratação é o mesmo problema de H1 em outra etapa.</div>
+      </div>
+
+      <div class="hyp-card">
+        <h3>H5 — Contratos OS medem produção sem exigir FCR (E6A→E7)</h3>
+        <p>A AME/OS-OSCIP é remunerada por consulta realizada. Absenteísmo não é penalizado.
+        Contrarreferência não é requisito contratual.</p>
+        <div class="evidence">O MFC nunca fecha o loop — e o mesmo paciente volta ao E4, ampliando
+        a fila que H3 já mantém opaca.</div>
+      </div>
+
+    </div>
+    <div class="callout warning" style="margin-top:1rem">
+      <strong>Fora de escopo (jornada-cêntrico):</strong> H6 (judicialização individual via
+      Defensoria) e H7 (ressarcimento ANS subutilizado) são diagnósticos válidos do relatório de
+      auditoria, mas puxam para atores fora do recorte da jornada ordinária de consulta.
+    </div>
+  </section>
+
+  <!-- ── Vozes Críticas ── -->
+  <section id="vozes">
+    <h2>Vozes Críticas</h2>
+    <ul class="voice-list">
+      <li>
+        <strong>DenaSUS (ator 20)</strong>
+        Voz crítica mais consistente via relatórios de auditoria sobre metas físicas e financeiras;
+        dados do SIA/SUS com defasagem limitam a tempestividade dos achados.
+      </li>
+      <li>
+        <strong>Conselhos de Saúde (ator 19)</strong>
+        Participação formal existe; o problema é a ausência de capacidade técnica analítica para
+        monitorar indicadores do SIRESP e do e-Gestor APS. A ausência de controle social efetivo
+        sobre dados de cobertura é, ela mesma, um achado.
+      </li>
+      <li>
+        <strong>Ouvidorias (ator 22)</strong>
+        Padrão recorrente de reclamações sobre filas, ausência de contrarreferência e absenteísmo:
+        <em>intelligence</em> diagnóstica sistematicamente subutilizada pela gestão.
+      </li>
+      <li>
+        <strong>TCU / CGU / Ministério Público (fora do roster — vozes críticas externas)</strong>
+        Não incluídos como atores operacionais da jornada por decisão de altitude, mas com poder de
+        redesenhar o serviço via acórdão ou ação civil pública. O Tema 698 do STF
+        (RE 684.612/RJ, jul/2023) já fixou que intervenção judicial em políticas de saúde é legítima
+        diante de inércia ou deficiência grave. A ausência de metas vinculantes de contrarreferência
+        nos contratos de gestão OS é o tipo de achado que TCU pode converter em determinação
+        vinculante <em>overnight</em>.
+      </li>
+      <li>
+        <strong>Lacuna de Controle Social Digital (achado)</strong>
+        Não se localizou iniciativa sistemática de organizações como Transparência Brasil, Open
+        Knowledge Brasil ou Fiquem Sabendo sobre monitoramento público das filas do SIRESP ou dos
+        contratos de gestão das OS de saúde. <strong>A ausência é, ela mesma, um achado</strong> —
+        reforça H3 (opacidade da demanda reprimida): o principal instrumento de regulação do acesso
+        ambulatorial paulista não tem fiscalização da sociedade civil organizada.
+      </li>
+    </ul>
+  </section>
+
+  <!-- ── Decisões do Grill ── -->
+  <section id="decisoes">
+    <h2>Decisões do Grill citadas neste mapa</h2>
+    <ol class="decisions">
+      <li>
+        <strong>CROSS/SIRESP como ator institucional; demais sistemas como artefatos</strong> —
+        a agência regulatória com contrato de gestão próprio (OS Seconci-SP delegada pela SES-SP)
+        qualifica a CROSS como ator com accountability, não ferramenta. e-SUS, RNDS, SIA/SUS e
+        e-Gestor APS são anotados como ferramentas nos atores que os operam.
+        <em>(grill Q4)</em>
+      </li>
+      <li>
+        <strong>Urgência como ramo paralelo (E6B)</strong> — evita colapsar E6A e E6B numa mesma
+        coluna, tornando visível que a convergência em E7 é frágil em ambos os fluxos e que o
+        beco-sem-saída da urgência tem dinâmica própria (superlotação por demanda que deveria ter
+        sido resolvida na APS).
+        <em>(grill Q3)</em>
+      </li>
+      <li>
+        <strong>Cidadão como sujeito da jornada</strong> — faixa própria no topo, não ator
+        operacional equiparado a médicos e gestores: o cidadão é destinatário de todas as ações,
+        e seus pontos de fricção por etapa (barreiras, opacidade da fila, absenteísmo,
+        descontinuidade) são o termômetro do serviço.
+        <em>(grill Q7)</em>
+      </li>
+      <li>
+        <strong>Faixa backstage horizontal com 3 sub-linhas</strong> — separa as causas operacionais
+        (linha de frente) das causas estruturais (gestão/financiamento, controle/auditoria,
+        formação/provimento), revelando que o déficit de 57,8% tem determinantes em ambas as camadas
+        e não pode ser resolvido só pela linha de frente.
+        <em>(grill Q5)</em>
+      </li>
+      <li>
+        <strong>Estrutura linear</strong> (posição na jornada) em vez de concêntrica — evidencia os
+        handoffs E3→E4, E5→E6A e sobretudo E6A→E7 onde a accountability se fragmenta e onde mora o
+        principal achado RACI deste mapa.
+        <em>(grill Q2)</em>
+      </li>
+    </ol>
+  </section>
+
+  <footer>
+    Derivado de <code>B_relatorio_auditoria_v3.md</code> (pesquisa adversária, 3 rodadas de auditoria)
+    e decidido na sessão <code>/grill-me</code> registrada em <code>C_grill_transcript.md</code>.
+  </footer>
+
+</div>
+
+<script>
+  mermaid.initialize({
+    startOnLoad: true,
+    theme: 'default',
+    flowchart: { useMaxWidth: true, htmlLabels: true },
+    themeVariables: {
+      primaryColor: '#ddeeff',
+      primaryTextColor: '#1a1a2e',
+      primaryBorderColor: '#1a4f72',
+      lineColor: '#5b8db8',
+      secondaryColor: '#f0f7ff',
+      tertiaryColor: '#fff8e6'
+    }
+  });
+</script>
+</body>
+</html>
