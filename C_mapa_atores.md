@@ -269,6 +269,25 @@ mesmo paciente volta ao E4, ampliando a fila que H3 já mantém opaca.
    handoffs E3→E4, E5→E6A e sobretudo E6A→E7 onde a accountability se fragmenta
    e onde mora o principal achado RACI deste mapa. *(grill Q2)*
 
+6. **Escopo end-to-end (E1→E7)** em vez de recorte parcial na fila SIRESP/CROSS —
+   o gap de 42,2% de cobertura tem determinantes em múltiplas etapas (vacância
+   médica na eSF em E2, regulação em E4–E5, contrarreferência em E7), não apenas
+   na regulação ambulatorial. Restringir ao SIRESP teria ocultado as causas a
+   montante e a jusante que geram a demanda reprimida. *(grill Q1)*
+
+7. **Anotação: Nome + Papel + Ponto de fricção principal** (em vez de incluir
+   âncoras normativas no mapa ou misturar diagnóstico com prescrição) — as
+   âncoras normativas ficam em tabela de apoio; as alavancas de melhoria ficam em
+   artefato complementar. O mapa permanece diagnóstico sem tornar-se prescritivo,
+   mantendo a altitude adequada para identificar handoffs sem accountability.
+   *(grill Q6)*
+
+8. **Formato: tabela markdown + glossário de atores** (em vez de narrativa por
+   etapa ou somente tabela) — a tabela entrega a visão sintética do mapa (útil em
+   apresentações); o glossário garante que cada ator tenha profundidade suficiente
+   para ancorar decisões de melhoria. Coerente com o rigor metodológico já
+   demonstrado no ciclo de auditorias da Parte B. *(grill Q8)*
+
 ---
 
 *Mapa derivado de `B_relatorio_auditoria_v3.md` (pesquisa adversária, 3 rodadas de

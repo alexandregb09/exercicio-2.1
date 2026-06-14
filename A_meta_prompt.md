@@ -10,6 +10,8 @@ Atue como um pesquisador sênior especializado em políticas públicas de saúde
 
 Realize uma pesquisa profunda, multidisciplinar e baseada em evidências sobre os atores envolvidos no serviço de Consulta Médica no Sistema Único de Saúde (SUS) brasileiro.
 
+O serviço analisado é a **Consulta Médica na Atenção Primária à Saúde (APS)**, prestada nas **Unidades Básicas de Saúde (UBS)** pelas equipes da **Estratégia Saúde da Família (eSF)**, abrangendo o fluxo de encaminhamento para a **Atenção Especializada** (AME, policlínicas, ambulatórios de especialidades). O órgão federal de gestão e regulação de referência é a **Secretaria de Atenção Primária à Saúde (SAPS)** do **Ministério da Saúde**, com execução delegada às **Secretarias Municipais de Saúde** como responsáveis operacionais pelo canal de atendimento.
+
 
 
 \## Objetivo Geral
