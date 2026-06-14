@@ -19,7 +19,8 @@ demand* no nível especializado.
 O mapa não é um inventário completo do SUS (financiamento constitucional, habilitação
 de leitos hospitalares e judicialização de segunda instância ficaram **fora de escopo**
 por decisão de altitude). Ele é **jornada-cêntrico**: detalha quem participa das
-etapas E1–E7 e a retaguarda que **gera os gargalos de acesso**.
+etapas **E1–E7** — do primeiro contato na APS até o retorno por contrarreferência —
+e a retaguarda que **gera os gargalos de acesso**. *(grill Q1)*
 
 ---
 
@@ -111,7 +112,7 @@ flowchart TB
 
 ---
 
-## Tabela de atores — RACI por etapa + categoria × palco
+## Tabela de atores — RACI por etapa + categoria × palco *(grill Q8)*
 
 **Etapas da jornada:**
 **E1** Acolhimento e Triagem ·
@@ -123,7 +124,7 @@ flowchart TB
 **E6B** Urgência/Emergência *(ramo paralelo)* ·
 **E7** Contrarreferência e Retorno.
 
-**RACI:** **R** = executa · **A** = responde/aprova (*accountable*) · **C** = consultado · **I** = informado.
+**RACI:** **R** = executa · **A** = responde/aprova (*accountable*) · **C** = consultado · **I** = informado. Cada ator é anotado com nome, papel e ponto de fricção principal; âncoras normativas registradas como metadado em tabela de apoio. *(grill Q6)*
 
 | # | Ator | Categoria | Palco | Etapa(s) RACI | Entra na jornada | Sai da jornada | Poder | Interesse |
 |---|------|-----------|-------|---------------|------------------|----------------|-------|-----------|
