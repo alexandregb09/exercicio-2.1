@@ -243,51 +243,50 @@ mesmo paciente volta ao E4, ampliando a fila que H3 já mantém opaca.
 
 ---
 
-## Decisões do grill citadas neste mapa
+## Decisões tomadas durante o grill que motivam as escolhas do mapa
 
-1. **CROSS/SIRESP como ator institucional; demais sistemas como artefatos** — a
-   agência regulatória com contrato de gestão próprio (OS Seconci-SP delegada pela
-   SES-SP) qualifica a CROSS como ator com accountability, não ferramenta. e-SUS,
-   RNDS, SIA/SUS e e-Gestor APS são anotados como ferramentas nos atores que os
-   operam. *(grill Q4)*
+As 8 decisões abaixo foram tomadas durante a sessão `/grill-me`
+(ver `C_grill_transcript.md`) e motivaram diretamente as escolhas estruturais deste mapa.
 
-2. **Urgência como ramo paralelo (E6B)** — evita colapsar E6A e E6B numa mesma
-   coluna, tornando visível que a convergência em E7 é frágil em ambos os fluxos e
-   que o beco-sem-saída da urgência tem dinâmica própria (superlotação por demanda
-   que deveria ter sido resolvida na APS). *(grill Q3)*
+1. **Escopo end-to-end (E1→E7)** — Decisão tomada durante o grill (Q1) motivou
+   cobrir a jornada completa desde o primeiro contato na APS até a contrarreferência,
+   em vez de recorte parcial na fila SIRESP/CROSS. O gap de 42,2% tem determinantes
+   em múltiplas etapas; restringir ao SIRESP teria ocultado causas a montante e a
+   jusante. *(grill Q1)*
 
-3. **Cidadão como sujeito da jornada** — faixa própria no topo, não ator operacional
-   equiparado a médicos e gestores: o cidadão é destinatário de todas as ações,
-   e seus pontos de fricção por etapa (barreiras, opacidade da fila, absenteísmo,
-   descontinuidade) são o termômetro do serviço. *(grill Q7)*
-
-4. **Faixa backstage horizontal com 3 sub-linhas** — separa as causas operacionais
-   (linha de frente) das causas estruturais (gestão/financiamento, controle/auditoria,
-   formação/provimento), revelando que o déficit de 57,8% tem determinantes em ambas
-   as camadas e não pode ser resolvido só pela linha de frente. *(grill Q5)*
-
-5. **Estrutura linear** (posição na jornada) em vez de concêntrica — evidencia os
-   handoffs E3→E4, E5→E6A e sobretudo E6A→E7 onde a accountability se fragmenta
+2. **Estrutura linear** (posição na jornada) em vez de concêntrica — Decisão tomada
+   durante o grill (Q2) motivou organizar os atores por etapa de jornada, evidenciando
+   os handoffs E3→E4, E5→E6A e sobretudo E6A→E7 onde a accountability se fragmenta
    e onde mora o principal achado RACI deste mapa. *(grill Q2)*
 
-6. **Escopo end-to-end (E1→E7)** em vez de recorte parcial na fila SIRESP/CROSS —
-   o gap de 42,2% de cobertura tem determinantes em múltiplas etapas (vacância
-   médica na eSF em E2, regulação em E4–E5, contrarreferência em E7), não apenas
-   na regulação ambulatorial. Restringir ao SIRESP teria ocultado as causas a
-   montante e a jusante que geram a demanda reprimida. *(grill Q1)*
+3. **Urgência como ramo paralelo (E6B)** — Decisão tomada durante o grill (Q3) motivou
+   não colapsar E6A e E6B numa mesma coluna, tornando visível que a convergência em E7
+   é frágil em ambos os fluxos e que a urgência tem dinâmica própria (superlotação por
+   demanda que deveria ter sido resolvida na APS). *(grill Q3)*
 
-7. **Anotação: Nome + Papel + Ponto de fricção principal** (em vez de incluir
-   âncoras normativas no mapa ou misturar diagnóstico com prescrição) — as
-   âncoras normativas ficam em tabela de apoio; as alavancas de melhoria ficam em
-   artefato complementar. O mapa permanece diagnóstico sem tornar-se prescritivo,
-   mantendo a altitude adequada para identificar handoffs sem accountability.
-   *(grill Q6)*
+4. **CROSS/SIRESP como ator institucional; demais sistemas como artefatos** — Decisão
+   tomada durante o grill (Q4) motivou tratar a CROSS (OS Seconci-SP com contrato de
+   gestão próprio) como ator com accountability, e anotar e-SUS, RNDS, SIA/SUS e
+   e-Gestor APS como ferramentas nos atores que os operam. *(grill Q4)*
 
-8. **Formato: tabela markdown + glossário de atores** (em vez de narrativa por
-   etapa ou somente tabela) — a tabela entrega a visão sintética do mapa (útil em
-   apresentações); o glossário garante que cada ator tenha profundidade suficiente
-   para ancorar decisões de melhoria. Coerente com o rigor metodológico já
-   demonstrado no ciclo de auditorias da Parte B. *(grill Q8)*
+5. **Faixa backstage horizontal com 3 sub-linhas** — Decisão tomada durante o grill
+   (Q5) motivou separar as causas operacionais (linha de frente) das causas estruturais
+   (gestão/financiamento, controle/auditoria, formação/provimento), revelando que o
+   déficit de 57,8% não pode ser resolvido só pela linha de frente. *(grill Q5)*
+
+6. **Anotação: Nome + Papel + Ponto de fricção principal** — Decisão tomada durante o
+   grill (Q6) motivou anotar cada ator com nome, papel e seu principal gargalo, deixando
+   âncoras normativas em tabela de apoio e alavancas de melhoria em artefato
+   complementar, para manter o mapa diagnóstico sem tornar-se prescritivo. *(grill Q6)*
+
+7. **Cidadão como sujeito da jornada** — Decisão tomada durante o grill (Q7) motivou
+   posicionar o cidadão em faixa horizontal própria no topo, não como ator operacional
+   equiparado a médicos e gestores: seus pontos de fricção por etapa são o termômetro
+   do serviço. *(grill Q7)*
+
+8. **Formato: tabela markdown + glossário de atores** — Decisão tomada durante o grill
+   (Q8) motivou adotar tabela RACI para visão sintética mais glossário de atores para
+   profundidade analítica, em vez de narrativa por etapa ou tabela isolada. *(grill Q8)*
 
 ---
 
